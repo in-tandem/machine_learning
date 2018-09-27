@@ -1,0 +1,5 @@
+1. take  a training set with single feature across n sets of data
+2. implement perceptron on your own
+3. plot the linear classification and number of epochs vs error data
+4. supplement the above example using numpy features
+5. take full training set with multiple features across n sets of data
