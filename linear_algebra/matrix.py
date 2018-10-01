@@ -49,15 +49,7 @@ class Matrix(object):
 
         """
 
-        expected_number_of_columns = self.number_of_rows
-        expected_number_of_rows  = self.number_of_columns
-
-        new_data = []
-
-        for i in range(expected_number_of_rows):
-
-            new_data.append([self.data[j][i] for j in range(expected_number_of_columns) ])
-            
+        new_data = [list(i) for i in zip(*self.data)]
         assert new_data == numpy.transpose(self.data).tolist()
         return new_data
 
@@ -88,7 +80,7 @@ class Matrix(object):
 
     def add(self, matrix):
         pass
-'''
+
 matrix = Matrix(2,4,[[1,2,4,5],[11,22,33,44]])
 matrix.transpose()
 
@@ -108,3 +100,4 @@ matrix.multiply(Matrix(2,2,[[5,6],[7,8]]))
 matrix = Matrix(3,2,[[1,2],[3,4],[5,6]])
 matrix.multiply(Matrix(2,2,[[5,6],[7,8]]))
 
+'''
