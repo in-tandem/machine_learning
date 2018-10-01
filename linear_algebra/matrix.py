@@ -58,8 +58,6 @@ class Matrix(object):
 
             new_data.append([self.data[j][i] for j in range(expected_number_of_columns) ])
             
-        print("computed response %s"%new_data)
-        print("expected response %s"%numpy.transpose(self.data))
         assert new_data == numpy.transpose(self.data).tolist()
         return new_data
 
@@ -96,9 +94,7 @@ class Matrix(object):
 
             computed_data.append(temp)
     
-        print(computed_data)
         expected_response = numpy.dot(self.data, matrix.data).tolist()
-        print(expected_response)
         assert computed_data == expected_response
 
 
