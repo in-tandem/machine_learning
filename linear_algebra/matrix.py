@@ -93,11 +93,8 @@ matrix.transpose()
 matrix = Matrix(4,1,[[1],[2],[4],[5]])
 matrix.transpose()
 
-'''
 matrix = Matrix(2,2,[[1,2],[3,4]])
 matrix.multiply(Matrix(2,2,[[5,6],[7,8]]))
 
 matrix = Matrix(3,2,[[1,2],[3,4],[5,6]])
 matrix.multiply(Matrix(2,2,[[5,6],[7,8]]))
-
-'''
