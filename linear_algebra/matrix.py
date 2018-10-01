@@ -17,7 +17,7 @@ class Matrix(object):
             for _ in range(self.number_of_rows):
                 self.data.append( [None for j in range(self.number_of_columns)])
             
-        print(self.data)
+        # print(self.data)
 
     def checkForSanityOfData(self, data):
         """
@@ -61,15 +61,51 @@ class Matrix(object):
         print("computed response %s"%new_data)
         print("expected response %s"%numpy.transpose(self.data))
         assert new_data == numpy.transpose(self.data).tolist()
+        return new_data
 
-
-    
     def multiply(self, matrix):
-        pass
+        """
+
+            Multiplies this matrix with the given matrix
+            matrix multiplication A[n,m] and B[m,p] is possible 
+            only if columns of A matrix is equal to rows of
+            B matrix.
+
+            C = A[n,m] * B[m,p] = summation(A[ij]B[jk])
+            where num of rows(C) = n
+            num of col(C) = p
+
+        """
+        number_of_rows= matrix.number_of_rows
+        number_of_columns= matrix.number_of_columns
+
+        if self.number_of_columns != number_of_rows:
+            raise AssertionError("Matrices cannot be multiplied")
     
+        computed_data = []
+
+        for i in range(self.number_of_rows):
+            temp = []
+            for k in range(number_of_columns):
+                
+                value = 0
+                for j in range(self.number_of_columns):               
+                    value+= self.data[i][j] * matrix.data[j][k]
+                
+                temp.append(value)
+
+            computed_data.append(temp)
+    
+        print(computed_data)
+        expected_response = numpy.dot(self.data, matrix.data).tolist()
+        print(expected_response)
+        assert computed_data == expected_response
+
+
+
     def add(self, matrix):
         pass
-
+'''
 matrix = Matrix(2,4,[[1,2,4,5],[11,22,33,44]])
 matrix.transpose()
 
@@ -81,3 +117,11 @@ matrix.transpose()
 
 matrix = Matrix(4,1,[[1],[2],[4],[5]])
 matrix.transpose()
+
+'''
+matrix = Matrix(2,2,[[1,2],[3,4]])
+matrix.multiply(Matrix(2,2,[[5,6],[7,8]]))
+
+matrix = Matrix(3,2,[[1,2],[3,4],[5,6]])
+matrix.multiply(Matrix(2,2,[[5,6],[7,8]]))
+
