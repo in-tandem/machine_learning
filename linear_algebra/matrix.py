@@ -74,25 +74,12 @@ class Matrix(object):
             num of col(C) = p
 
         """
-        number_of_rows= matrix.number_of_rows
-        number_of_columns= matrix.number_of_columns
-
-        if self.number_of_columns != number_of_rows:
+        if self.number_of_columns != matrix.number_of_rows:
             raise AssertionError("Matrices cannot be multiplied")
     
-        computed_data = []
-
-        for i in range(self.number_of_rows):
-            temp = []
-            for k in range(number_of_columns):
-                
-                value = 0
-                for j in range(self.number_of_columns):               
-                    value+= self.data[i][j] * matrix.data[j][k]
-                
-                temp.append(value)
-
-            computed_data.append(temp)
+        computed_data = [[sum(aa * bb for aa, bb in zip(A_row, B_col)) \
+                                for B_col in zip(*matrix.data)] \
+                                    for A_row in self.data]
     
         expected_response = numpy.dot(self.data, matrix.data).tolist()
         assert computed_data == expected_response
