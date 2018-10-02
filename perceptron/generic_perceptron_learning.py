@@ -48,6 +48,13 @@ class Perceptron(object):
         plot.scatter(_x_data,_y_data)
         plot.show()
 
+    def shuffle(self, x_values, y_values):
+
+        temp= list(zip(x_values,y_values))
+        random.shuffle(temp)
+        unpacked = list(zip(*temp))
+        return (unpacked[0],unpacked[1])
+
     def learn(self):
         
         self.setup() 
@@ -56,15 +63,21 @@ class Perceptron(object):
 
         for epoch in range(self.epochs):
 
+            # we shuffle the training set at the start of each
+            # iteration so that we do not end up with the same
+            # calculations on the same training sets every time
+
+            # X, Y = self.shuffle(self._x_training_set, self._y_training_set)
+            # print(X)
+            # print(Y)
+            _iterable = list(range(self.number_of_training_set))
+            random.shuffle(_iterable)
             for i in range(self.number_of_training_set):
                 _x = self._x_training_set[i]
                 _desired = self._y_training_set[i]
                 _weight = self.weights
-                guess = _weight[0] ## setting up the bias unit
-
-                for j in range(len(_x)):
-                    guess += _weight[j+1] * _x[j]
                 
+                guess = _weight[0] + sum([_weight[j+1] * _x[j] for j in range(len(_x))])
                 error = _desired - guess
 
                 ## i am going to reset all the weights
@@ -72,10 +85,9 @@ class Perceptron(object):
 
                     ## resetting the bias unit
                     self.weights[0] = error * self.learning_rate
-
-                    for j in range(len(_x)):
-                        self.weights[j+1] = self.weights[j+1] + error * self.learning_rate * _x[j]
-
+                    self.weights[1:] =[self.weights[j+1] + error * self.learning_rate * _x[j] \
+                                            for j in range(len(_x))]
+                
             #saving error at the end of the training set        
             epoch_data[epoch] = error**2
         
@@ -85,7 +97,7 @@ class Perceptron(object):
 
 def runMyCode():
     learning_rate = 0.01
-    epochs = 10
+    epochs = 45
     random_generator_start = -1
     random_generator_end = 1
     perceptron = Perceptron(epochs, learning_rate, [random_generator_start, random_generator_end])
