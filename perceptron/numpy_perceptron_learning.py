@@ -87,7 +87,7 @@ class Perceptron(object):
                     self.weights[1:] = self.weights[1:] + error * self.learning_rate * _x
 
             #saving error at the end of the training set        
-            epoch_data[epoch] = error
+            epoch_data[epoch] = error**2
         
         print(epoch_data)
 

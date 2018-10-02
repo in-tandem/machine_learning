@@ -77,7 +77,7 @@ class Perceptron(object):
                         self.weights[j+1] = self.weights[j+1] + error * self.learning_rate * _x[j]
 
             #saving error at the end of the training set        
-            epoch_data[epoch] = error
+            epoch_data[epoch] = error**2
         
         # print(epoch_data)
 
@@ -85,7 +85,7 @@ class Perceptron(object):
 
 def runMyCode():
     learning_rate = 0.01
-    epochs = 6
+    epochs = 10
     random_generator_start = -1
     random_generator_end = 1
     perceptron = Perceptron(epochs, learning_rate, [random_generator_start, random_generator_end])
