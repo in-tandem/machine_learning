@@ -68,8 +68,7 @@ class Perceptron(object):
             # calculations on the same training sets every time
 
             # X, Y = self.shuffle(self._x_training_set, self._y_training_set)
-            # print(X)
-            # print(Y)
+            
             _iterable = list(range(self.number_of_training_set))
             random.shuffle(_iterable)
             for i in range(self.number_of_training_set):
@@ -97,7 +96,7 @@ class Perceptron(object):
 
 def runMyCode():
     learning_rate = 0.01
-    epochs = 45
+    epochs = 10
     random_generator_start = -1
     random_generator_end = 1
     perceptron = Perceptron(epochs, learning_rate, [random_generator_start, random_generator_end])
