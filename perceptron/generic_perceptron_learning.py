@@ -71,12 +71,17 @@ class Perceptron(object):
             
             _iterable = list(range(self.number_of_training_set))
             random.shuffle(_iterable)
+            errors =0 
             for i in range(self.number_of_training_set):
                 _x = self._x_training_set[i]
                 _desired = self._y_training_set[i]
                 _weight = self.weights
                 
                 guess = _weight[0] + sum([_weight[j+1] * _x[j] for j in range(len(_x))])
+
+                ## possible desired values are 0 or 1. our guess function also need
+                ## to reflect the same
+               
                 error = _desired - guess
 
                 ## i am going to reset all the weights
@@ -86,17 +91,17 @@ class Perceptron(object):
                     self.weights[0] = error * self.learning_rate
                     self.weights[1:] =[self.weights[j+1] + error * self.learning_rate * _x[j] \
                                             for j in range(len(_x))]
-                
+                    errors+=error
             #saving error at the end of the training set        
-            epoch_data[epoch] = error**2
+            epoch_data[epoch] = errors**2 # sum of least squares, we dont this to be as small as possible
         
-        # print(epoch_data)
+        print(epoch_data)
 
         self.draw_initial_plot(list(epoch_data.keys()), list(epoch_data.values()),'Epochs', 'Error')
 
 def runMyCode():
     learning_rate = 0.01
-    epochs = 10
+    epochs = 35
     random_generator_start = -1
     random_generator_end = 1
     perceptron = Perceptron(epochs, learning_rate, [random_generator_start, random_generator_end])
