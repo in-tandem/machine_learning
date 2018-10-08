@@ -28,11 +28,11 @@ perceptron = Perceptron( \
                 epochs = 40, \
                 _x_training_set = _x_train, \
                 _y_training_set = _y_train,
-                standardize= True
+                standardize= False
                 )
 
 perceptron.learn()
 _y_predicted = perceptron.predict(_x_test)
 print(_y_test)
-# print(accuracy_score(_y_predicted, _y_test))
+print(accuracy_score(_y_predicted, _y_test))
 print(mean_absolute_error(_y_predicted, _y_test))

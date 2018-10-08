@@ -82,7 +82,7 @@ class Perceptron(object):
                 ## possible desired values are 0 or 1. our guess function also need
                 ## to reflect the same
                
-                error = _desired - guess
+                error = _desired - guess #(1 if guess >=0 else 0)
 
                 ## i am going to reset all the weights
                 if error!= 0 :
@@ -93,7 +93,7 @@ class Perceptron(object):
                                             for j in range(len(_x))]
                     errors+=error
             #saving error at the end of the training set        
-            epoch_data[epoch] = errors**2 # sum of least squares, we dont this to be as small as possible
+            epoch_data[epoch] = errors**2 # sum of least squares, we want this to be as small as possible
         
         print(epoch_data)
 
@@ -109,9 +109,10 @@ class Perceptron(object):
         prediction = []
 
         for i in range(len(_x_test_data)):
-            prediction.append(self.weights[0] +  \
+            guess = self.weights[0] +  \
                     sum([self.weights[j+1] * _x_test_data[i][j] \
-                        for j in range(len(_x_test_data[i]))]))
+                        for j in range(len(_x_test_data[i]))])
+            prediction.append( 1 if guess >=0 else 0)
 
         print(prediction)
         return prediction
