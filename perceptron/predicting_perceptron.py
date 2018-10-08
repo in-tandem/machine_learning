@@ -1,3 +1,5 @@
+from numpy.random import RandomState
+
 import pandas as panda
 import matplotlib.pyplot as plot 
 import random
@@ -14,15 +16,15 @@ def standard_deviation(values):
 
 class Perceptron(object):
     
-    def __init__(self, epochs, learning_rate, standardize = False, weight_range = None):
+    def __init__(self, epochs, learning_rate, _x_training_set, _y_training_set, standardize = False, random_state = None):
         self.epochs = epochs
         self.learning_rate = learning_rate
-        self.standardize = standardize
-        self.weight_range = weight_range if weight_range else [-1, 1]
-        self.weights = []
-        self._x_training_set = None
-        self._y_training_set = None
-        self.number_of_training_set = 0        
+        self.standardize = standardize        
+        self._x_training_set = _x_training_set
+        self._y_training_set = _y_training_set
+        self.number_of_training_set = len(self._y_training_set)
+        self.weights = []      
+        self.random_state = RandomState(random_state if random_state else 1)
 
     def standardizeInputData(self):
         """
@@ -44,54 +46,22 @@ class Perceptron(object):
         for i in range(len(self._x_training_set)):
             
             mean = sum(self._x_training_set[i])/ len(self._x_training_set[i])
-            standard_deviation = standard_deviation(self._x_training_set[i])
-            temp.append([ (j - mean)/standard_deviation for j in self._x_training_set[i]])            
+            std_deviation = standard_deviation(self._x_training_set[i])
+            temp.append([ (j - mean)/std_deviation for j in self._x_training_set[i]])            
 
         return temp
         
     def setup(self):
-
-        self.number_of_training_set = self.setup_training_set()
-        self.initialize_weights(len(self._x_training_set[0]) + 1)
-
-    def setup_training_set(self):
-        """
-
-        Downloading training set data from UCI ML Repository - Iris DataSet
         
-        """
-
-        data = panda.read_csv(remote_location)       
-
-        self._x_training_set = list(data.iloc[0:, [0,2]].values)
-        self._y_training_set = [0 if i.lower()!='iris-setosa' else 1 
-                                    for i in data.iloc[0:, 4].values]
-
         if self.standardize:
             self._x_training_set = self.standardizeInputData()
 
-        return len(self._x_training_set)
-
+        self.initialize_weights(len(self._x_training_set[0]) + 1)
+    
     def initialize_weights(self, number_of_weights):
-        random_weights = [random.uniform(self.weight_range[0], self.weight_range[1]) 
-                                for i in range(number_of_weights + 1)]
-        # self.weights.append(-1) # setting up bias unit 
-        self.weights.extend(random_weights)
 
-    def draw_initial_plot(self, _x_data, _y_data, _x_label, _y_label):
-        
-        plot.xlabel(_x_label)
-        plot.ylabel(_y_label)
-        plot.scatter(_x_data,_y_data)
-        plot.show()
-
-    def shuffle(self, x_values, y_values):
-
-        temp= list(zip(x_values,y_values))
-        random.shuffle(temp)
-        unpacked = list(zip(*temp))
-        return (unpacked[0],unpacked[1])
-
+        self.weights = list(self.random_state.normal(loc = 0.0, scale = 0.01, size = len(self._x_training_set[0]) + 1))
+    
     def learn(self):
         
         self.setup() 
@@ -100,15 +70,8 @@ class Perceptron(object):
 
         for epoch in range(self.epochs):
 
-            # we shuffle the training set at the start of each
-            # iteration so that we do not end up with the same
-            # calculations on the same training sets every time
-
-            # X, Y = self.shuffle(self._x_training_set, self._y_training_set)
-            
-            _iterable = list(range(self.number_of_training_set))
-            random.shuffle(_iterable)
             errors =0 
+
             for i in range(self.number_of_training_set):
                 _x = self._x_training_set[i]
                 _desired = self._y_training_set[i]
@@ -134,19 +97,23 @@ class Perceptron(object):
         
         print(epoch_data)
 
-        self.draw_initial_plot(list(epoch_data.keys()), list(epoch_data.values()),'Epochs', 'Error')
+    def predict(self, _x_test_data):
+        """
 
-def runMyCode():
-    learning_rate = 0.01
-    epochs = 35
-    random_generator_start = -1
-    random_generator_end = 1
+            Given algorithm has been trained using the #learn method
+            this method will predict the y values based on the last
+            values calculated for weights. This is because
+            by the end of the learn method, algorithm has already
+            converged as close to 0 error as it can
+        """
+        prediction = []
 
-    perceptron = Perceptron( \
-                    epochs = epochs, \
-                    learning_rate = learning_rate, \
-                    weight_range = [random_generator_start, random_generator_end])
+        for i in range(len(_x_test_data)):
+            prediction.append(self.weights[0] +  \
+                    sum([self.weights[j+1] * _x_test_data[i][j] \
+                        for j in range(len(_x_test_data[i]))]))
 
-    perceptron.learn()
+        print(prediction)
+        return prediction
 
-# runMyCode()        
+
