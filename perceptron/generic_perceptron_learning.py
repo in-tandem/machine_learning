@@ -109,7 +109,7 @@ class Perceptron(object):
             _iterable = list(range(self.number_of_training_set))
             random.shuffle(_iterable)
             errors =0 
-            for i in range(self.number_of_training_set):
+            for i in _iterable:
                 _x = self._x_training_set[i]
                 _desired = self._y_training_set[i]
                 _weight = self.weights
@@ -138,7 +138,7 @@ class Perceptron(object):
 
 def runMyCode():
     learning_rate = 0.01
-    epochs = 35
+    epochs = 40
     random_generator_start = -1
     random_generator_end = 1
 
