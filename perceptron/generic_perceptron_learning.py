@@ -1,20 +1,54 @@
 import pandas as panda
 import matplotlib.pyplot as plot 
 import random
-
+from math import sqrt
 remote_location = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+
+def standard_deviation(values):
+    average = sum(values) / len(values)
+
+    variance = sum([(average - i)**2/len(values) for i in values])
+
+    return sqrt(variance)
+
 
 class Perceptron(object):
     
-    def __init__(self, epochs, learning_rate, weight_range = None):
+    def __init__(self, epochs, learning_rate, standardize = False, weight_range = None):
         self.epochs = epochs
         self.learning_rate = learning_rate
+        self.standardize = standardize
         self.weight_range = weight_range if weight_range else [-1, 1]
         self.weights = []
         self._x_training_set = None
         self._y_training_set = None
         self.number_of_training_set = 0        
 
+    def standardizeInputData(self):
+        """
+
+        Standardizing of feature set means substracting the mean of
+        each training sample from the feature value and dividing it by
+        the standard deviation
+
+        1. take average of j features from i th training sample . say avg
+        2. calculate the variance of each j feature
+        3. variance(j) = (avg - x(j))**2/len(features)
+        4. standard deviation of x(j) = sq rt(variance(j))
+
+        so standardized(x(j)) = x(j) - avg / standard deviation(x(j))
+
+        """
+        temp = []
+
+        for i in range(len(self._x_training_set)):
+            
+            mean = sum(self._x_training_set[i])/ len(self._x_training_set[i])
+            standard_deviation = standard_deviation(self._x_training_set[i])
+            temp.append([ (j - mean)/standard_deviation for j in self._x_training_set[i]])            
+
+        return temp
+        
     def setup(self):
 
         self.number_of_training_set = self.setup_training_set()
@@ -32,6 +66,9 @@ class Perceptron(object):
         self._x_training_set = list(data.iloc[0:, [0,2]].values)
         self._y_training_set = [0 if i.lower()!='iris-setosa' else 1 
                                     for i in data.iloc[0:, 4].values]
+
+        if self.standardize:
+            self._x_training_set = self.standardizeInputData()
 
         return len(self._x_training_set)
 
@@ -104,7 +141,12 @@ def runMyCode():
     epochs = 35
     random_generator_start = -1
     random_generator_end = 1
-    perceptron = Perceptron(epochs, learning_rate, [random_generator_start, random_generator_end])
+
+    perceptron = Perceptron( \
+                    epochs = epochs, \
+                    learning_rate = learning_rate, \
+                    weight_range = [random_generator_start, random_generator_end])
+
     perceptron.learn()
 
 runMyCode()        
