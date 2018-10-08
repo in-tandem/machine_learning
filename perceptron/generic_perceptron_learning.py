@@ -74,8 +74,8 @@ class Perceptron(object):
 
     def initialize_weights(self, number_of_weights):
         random_weights = [random.uniform(self.weight_range[0], self.weight_range[1]) 
-                                for i in range(number_of_weights)]
-        self.weights.append(-1) # setting up bias unit 
+                                for i in range(number_of_weights + 1)]
+        # self.weights.append(-1) # setting up bias unit 
         self.weights.extend(random_weights)
 
     def draw_initial_plot(self, _x_data, _y_data, _x_label, _y_label):
