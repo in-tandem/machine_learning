@@ -34,5 +34,5 @@ perceptron = Perceptron( \
 perceptron.learn()
 _y_predicted = perceptron.predict(_x_test)
 print(_y_test)
-print(accuracy_score(_y_predicted, _y_test))
-print(mean_absolute_error(_y_predicted, _y_test))
+print(accuracy_score(_y_test, _y_predicted))
+print(mean_absolute_error(_y_test, _y_predicted))

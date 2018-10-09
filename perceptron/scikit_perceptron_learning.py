@@ -8,7 +8,7 @@ from sklearn import datasets
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Perceptron
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, mean_absolute_error
 
 iris = datasets.load_iris()
 _x_training_set = iris.data[: , [2,3]]
@@ -35,3 +35,4 @@ perceptron.fit(_x_train_standardized,_y_train)
 
 _y_pred = perceptron.predict(_x_pred_standardized)
 print("Accuracy of training set %s" %accuracy_score(_y_test,_y_pred))
+print(mean_absolute_error(_y_test, _y_pred))
