@@ -1,5 +1,5 @@
 from numpy.random import RandomState
-
+from numpy import clip
 import pandas as panda
 import matplotlib.pyplot as plot 
 import random
@@ -79,8 +79,7 @@ class LogisticRegression(object):
                 
                 weighted_sum = _weight[0] + sum([_weight[j+1] * _x[j] for j in range(len(_x))])
 
-                guess = 1 / ( 1 + exp(- weighted_sum))
-
+                guess = 1 / ( 1 + exp(weighted_sum))
                 error = _desired - guess 
 
                 ## i am going to reset all the weights
