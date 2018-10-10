@@ -1,7 +1,7 @@
 import pandas as panda
 
 from sklearn.model_selection import train_test_split
-from predicting_logistic_regression import LogisticRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, mean_absolute_error
 
 remote_location = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
@@ -23,15 +23,9 @@ _x_train, _x_test, _y_train, _y_test = train_test_split( \
 random_generator_start = -1
 random_generator_end = 1
 
-logistic_regression = LogisticRegression( \
-                learning_rate = 0.01, \
-                epochs = 40, \
-                _x_training_set = _x_train, \
-                _y_training_set = _y_train,
-                standardize= False
-                )
+logistic_regression = LogisticRegression()
 
-logistic_regression.learn()
+logistic_regression.fit(_x_train,_y_train)
 _y_predicted = logistic_regression.predict(_x_test)
 print(_y_test)
 print(accuracy_score(_y_test, _y_predicted))
