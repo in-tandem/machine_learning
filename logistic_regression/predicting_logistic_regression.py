@@ -77,9 +77,26 @@ class LogisticRegression(object):
                 _desired = self._y_training_set[i]
                 _weight = self.weights
                 
-                weighted_sum = _weight[0] + sum([_weight[j+1] * _x[j] for j in range(len(_x))])
+                weighted_sum = [_weight[0]] + [_weight[j+1] * _x[j] for j in range(len(_x))]
+                
+                normalized_weighted_sum =  (sum(weighted_sum) - min(weighted_sum))/ (max(weighted_sum) - min(weighted_sum))
 
-                guess = 1 / ( 1 + exp(weighted_sum))
+                if normalized_weighted_sum > 710:
+
+                    print("sum of weighted sum %d" %sum(weighted_sum))
+                    print("min of weighted sum %d" %min(weighted_sum))
+                    print("max of weighted sum %d" %max(weighted_sum))
+                    print("diff of weighted sum %d" %(max(weighted_sum) - min(weighted_sum)))
+                    
+
+                try:
+                    guess = 1 / ( 1 + exp(normalized_weighted_sum))
+                
+                except Exception as e:
+                    
+                    print("stil getting overflow ... %d" %normalized_weighted_sum)
+
+
                 error = _desired - guess 
 
                 ## i am going to reset all the weights
@@ -91,6 +108,7 @@ class LogisticRegression(object):
                                             for j in range(len(_x))]
 
                     ## cost entropy loss function
+                    
                     cost+= - ( _desired * log(guess) + (1 - _desired) *log(1-guess))
                     
             #saving error at the end of the training set        
@@ -111,11 +129,13 @@ class LogisticRegression(object):
 
         for i in range(len(_x_test_data)):
 
-            weighted_sum = self.weights[0] +  \
-                    sum([self.weights[j+1] * _x_test_data[i][j] \
-                        for j in range(len(_x_test_data[i]))])
+            weighted_sum = [self.weights[0]] +  \
+                    [self.weights[j+1] * _x_test_data[i][j] \
+                        for j in range(len(_x_test_data[i]))]
 
-            guess = 1 / ( 1 + exp(- weighted_sum))
+            normalized_weighted_sum = (sum(weighted_sum) - min(weighted_sum))/(max(weighted_sum) - min(weighted_sum))
+ 
+            guess = 1 / ( 1 + exp(normalized_weighted_sum))
 
             prediction.append( 1 if guess >= 0.5 else 0)
 
