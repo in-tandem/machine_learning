@@ -75,7 +75,7 @@ for random_k in random_k_guesses:
 
     colors = cm.jet(label_predictions.astype(float) / random_k)
     second_plot.scatter(X[:, 0], X[:, 1], marker='.', s=30, lw=0, alpha=0.7,
-                c=colors, edgecolor='k')
+                c=colors, edgecolor='k') ## i am plotting what was presented, and not what was predicted
 
     # Labeling the clusters
     centers = k_means.cluster_centers_
