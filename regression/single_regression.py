@@ -46,11 +46,22 @@ def plotCorrelationCoefficients(data_frame):
 
     plot.show()
 
-def drawLinearPlot(X,y, model):
+def drawLinearPlot(X,y, y_prediction):
 
-    print(X,y)
     plot.scatter(X, y, marker = 'o', s = 45, color = 'blue') ## s had to be a number, if in string it was giving a very weird error
-    plot.plot(X, model.predict(X[:, np.newaxis]), color = 'red')
+    plot.plot(X, y_prediction,  color = 'red')
+    plot.show()
+
+def drawResidualPlot(X, y, y_prediction):
+
+    plot.scatter(X, y - y_prediction, marker = 'o', s= 45, color = 'red')
+    plot.title('Residual Plot')
+    plot.xlabel('X axis')
+    plot.ylabel('Residual')
+    plot.show()
+
+def drawResidualPlotUsingSeaborne(X, y, y_prediction):
+    sns.residplot(X, y_prediction, lowess=True, color="g")
     plot.show()
 
 def regressAgainstOneVariable(X,y):
@@ -73,7 +84,12 @@ def regressAgainstOneVariable(X,y):
     y_predict = regressor.predict(test_set)
 
     print('Mean squared error is ', mean_squared_error(y_test, y_predict), '\n r2 score is ', r2_score(y_test, y_predict))
-    drawLinearPlot(X[:, 0],y, regressor)
+    
+    all_y_prediction = regressor.predict(X[:, 0][:, np.newaxis])
+
+    drawLinearPlot(X[:, 0],y, all_y_prediction)    
+    drawResidualPlot(X[:, 0], y , all_y_prediction)
+    drawResidualPlotUsingSeaborne(X[:, 0], y , all_y_prediction)
 
 def regress(X,y):
 
