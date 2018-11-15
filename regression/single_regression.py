@@ -67,14 +67,21 @@ def regressAgainstOneVariable(X,y):
 
     y_predict = regressor.predict(test_set)
 
+    print('Mean squared error is ', mean_squared_error(y_test, y_predict), '\n r2 score is ', r2_score(y_test, y_predict))
     drawLinearPlot(X[:, 0],y, regressor)
 
 def regress(X,y):
 
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size = 0.3)
 
+    regressor = LinearRegression()
 
+    regressor.fit(x_train, y_train) ## we will regress against only one
 
+    y_predict = regressor.predict(x_test)
+
+    print('Mean squared error is ', mean_squared_error(y_test, y_predict), '\n r2 score is ', r2_score(y_test, y_predict))
+    
 
 def analyzeRegressionModel():
 
