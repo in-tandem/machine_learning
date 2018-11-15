@@ -55,13 +55,18 @@ def drawLinearPlot(X,y, model):
 
 def regressAgainstOneVariable(X,y):
 
+    
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size = 0.3)
+
+    x_train_scaled = StandardScaler().fit_transform(x_train)
+
+    x_test_scaled = StandardScaler().fit_transform(x_test)
 
     regressor = LinearRegression()
 
-    training_set = x_train[: , 0][:, np.newaxis] ## converting 1 d array to 2d, else linearregression was giving errors
+    training_set = x_train_scaled[: , 0][:, np.newaxis] ## converting 1 d array to 2d, else linearregression was giving errors
 
-    test_set = x_test[:, 0 ][:, np.newaxis]
+    test_set = x_test_scaled[:, 0 ][:, np.newaxis]
 
     regressor.fit(training_set, y_train) ## we will regress against only one
 
