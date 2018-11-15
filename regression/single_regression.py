@@ -15,7 +15,7 @@ import numpy as np
 
 def singleLinearRegression(n_samples = 10, n_features = 2):
 
-    X, y, coeff = make_regression(n_samples = 10, n_features = 2, shuffle = True, random_state = 12, coef = True )
+    X, y, coeff = make_regression(n_samples = n_samples, n_features = n_features, shuffle = True, random_state = 12, coef = True )
 
     return (X, y)
 
@@ -106,7 +106,7 @@ def regress(X,y):
 
 def analyzeRegressionModel():
 
-    X, y = singleLinearRegression(n_samples = 50)
+    X, y = singleLinearRegression(n_samples = 400)
     
     data_frame = panda.DataFrame(X, columns = ['c1', 'c2'])
 
