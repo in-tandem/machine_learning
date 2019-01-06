@@ -91,10 +91,28 @@ def vector_matrix_multiplication_using_python(m, v):
     assert len(v.shape) == 1
     assert m.shape[1] == v.shape[0]
 
-    z = np.zeros((m.shape[1]))
+    z = np.zeros((m.shape[0])).astype(np.int32)
 
     for i in range(m.shape[0]):
         z[i] = vector_multiplication_using_python(m[i, :],v)
+    
+    return z
+
+def matrix_multiplication_using_numpy(m1,m2):
+    assert len(m1.shape) == len(m2.shape)
+    assert m1.shape[1] == m2.shape[0]
+
+    return np.dot(m1,m2)
+
+def matrix_multiplication_using_python(m1, m2):
+    assert len(m1.shape) == len(m2.shape)
+    assert m1.shape[1] == m2.shape[0]
+
+    z = np.zeros((m1.shape[0], m2.shape[1]))
+
+    for i in range(m1.shape[0]):
+        for j in range(m2.shape[1]):
+            z[i,j] = vector_multiplication_using_python(m1[i],m2[:,j])
     
     return z
 
@@ -108,10 +126,13 @@ def execute():
     m = np.random.randint(2,6, (3,7))
     v = np.random.randint(5,17, (7))
 
-    print(len(m.shape))
-    print(vector_matrix_multiplication_using_numpy(m,v),\
-            vector_matrix_multiplication_using_python(m, v))
+    # print(vector_matrix_multiplication_using_numpy(m,v),\
+    #         vector_matrix_multiplication_using_python(m, v))
 
+    m1 = np.random.randint(2,6,(2,6))
+    m2 = np.random.randint(6,30,(6, 5))
 
+    print(matrix_multiplication_using_numpy(m1, m2), \
+                matrix_multiplication_using_python(m1,m2))
 
 execute()
