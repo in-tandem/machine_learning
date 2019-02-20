@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline, Pipeline
 
-import seaborn as sns
+# import seaborn as sns
 import numpy as np 
 import datetime, time
 
