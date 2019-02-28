@@ -49,6 +49,14 @@ class Perceptron(object):
         plot.scatter(_x_data,_y_data)
         plot.show()
 
+    def activation_function(self, x):
+        '''
+        for now returnning the exact value
+        essentially can be 1 if x>0 else 0 
+
+        '''
+        return x 
+
     def learn(self):
         
         self.setup() 
@@ -70,7 +78,7 @@ class Perceptron(object):
                 
                 guess = guess + np.dot(_x, _weight[1:])
 
-                error = _desired - guess
+                error = _desired - self.activation_function(guess)
 
                 ## i am going to reset all the weights
                 if error!= 0 :
@@ -94,6 +102,7 @@ class Perceptron(object):
         self.draw_initial_plot(list(epoch_data.keys()), list(epoch_data.values()),'Epochs', 'Error')
 
 def runMyCode():
+    np.random.seed(123)
     learning_rate = 0.01
     epochs = 10
     random_generator_start = -1
